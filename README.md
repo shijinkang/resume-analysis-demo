@@ -61,7 +61,7 @@ mvn spring-boot:run
 
 > **注意**：数据库路径 `./data/resumedb` 相对于**进程工作目录**。建议在 `backend/` 目录下启动，数据文件将保存在 `backend/data/`；若从项目根目录启动，则保存在根目录 `data/`。
 
-方式二：通过命令行参数启动jar包，来到根目录下进入cmd，执行命令，注意将java.exe路径换成你的java17路径
+方式二：通过命令行参数启动jar包，来到根目录下解压“打包jar”压缩文件，执行下面命令，注意将java.exe路径换成你的java17路径
 
 ```bach
 "D:\Develop\JDK\JDK17\bin\java.exe" -jar resume-analysis-1.0.0.jar --spring.ai.openai.api-key=你的deepseek api_key
