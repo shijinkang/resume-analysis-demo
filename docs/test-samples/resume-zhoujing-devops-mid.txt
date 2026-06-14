@@ -1,0 +1,49 @@
+姓名：周静
+手机：131-0000-9999
+邮箱：zhoujing@example.com
+
+【个人简介】
+6年工作经历，前2年做测试，后4年做 DevOps 和运维，
+熟悉 Linux 和 Kubernetes 运维，有 CI/CD 流水线搭建经验，
+但基础设施即代码（IaC）和编程能力相对偏弱，主要以操作配置为主。
+
+【工作经历】
+
+2021.06 - 至今  某互联网公司  DevOps 工程师
+- 负责公司 15 个微服务的 Kubernetes 部署和日常运维（集群规模约 80 个节点）
+- 使用 Jenkins 搭建 CI/CD 流水线，接入 50+ 代码仓库，实现自动化构建和部署
+- 维护 Prometheus + Grafana 监控告警体系，配置了 200+ 条告警规则
+- 接手了前人搭的 ELK 日志系统，日常维护和索引清理
+- 处理线上告警，协助研发定位问题（主要靠日志排查，深层性能分析能力有限）
+- 编写 Shell 脚本做一些自动化操作（备份、清理、批量发布）
+- Python 脚本写过几个简单的运维工具，代码质量一般
+
+2019.03 - 2021.05  某外包公司  测试工程师
+- 负责 Web 系统的功能测试和接口测试（Postman、JMeter）
+- 编写测试用例，提交 Bug 报告
+- 尝试搭过 Selenium 自动化测试框架，后因项目终止未继续
+
+【项目经历】
+
+项目名称：Kubernetes 集群迁移
+技术栈：Kubernetes, Helm, Docker, Jenkins, Nginx Ingress
+描述：将公司所有服务从传统虚拟机部署迁移至 K8s 容器化部署，
+编写了 50+ 个 Helm Chart，实现标准化部署模板。
+成果：部署时间从 2 小时人工操作降至 10 分钟自动化流程
+
+项目名称：监控告警平台
+技术栈：Prometheus, Grafana, Alertmanager, Node Exporter, Blackbox Exporter
+描述：为全公司微服务搭建统一的可观测性平台，覆盖基础设施指标、
+业务指标、告警通知（钉钉/企业微信）。
+
+【教育背景】
+2015.09 - 2019.06  某普通本科  网络工程  本科
+
+【技能清单】
+- 容器编排：Kubernetes（熟悉，日常运维，未做过深度二次开发）、Docker、Helm
+- CI/CD：Jenkins（熟悉）、GitLab CI（了解）、ArgoCD（刚开始学）
+- 监控：Prometheus、Grafana、ELK（了解，非深度使用）
+- 云平台：阿里云（熟悉 ECS、SLB、OSS），未用过 AWS
+- 编程：Shell（熟悉）、Python（基础，能写简单脚本）、Go（刚入门）
+- 弱项：Terraform/Ansible 等 IaC 工具几乎没用过，不熟悉混沌工程，编程能力偏弱
+- 认证：Kubernetes CKA 认证（2022 年，已过期未续）

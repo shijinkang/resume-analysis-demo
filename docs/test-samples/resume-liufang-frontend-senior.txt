@@ -1,0 +1,56 @@
+姓名：刘芳
+手机：136-0000-4444
+邮箱：liufang@example.com
+GitHub：github.com/liufang-fe
+
+【个人简介】
+4年前端开发经验，专注于 React 生态和前端工程化，有中后台系统、数据可视化大屏、
+移动端 H5 等多类型项目经验，追求极致的用户体验和代码质量。
+
+【工作经历】
+
+2021.04 - 至今  某金融科技公司  前端技术专家
+- 负责公司核心业务系统（风控中台、运营后台）的前端架构设计与开发
+- 主导前端基础设施建设：组件库、CLI 工具、性能监控平台
+- 搭建微前端架构（qiankun），整合 5 个独立子应用，实现技术栈渐进升级
+- 优化首屏加载时间从 4.5s 降至 1.2s（代码分割、懒加载、CDN 加速）
+- 建立前端代码规范和 Code Review 流程，提升团队代码质量
+
+2019.07 - 2021.03  某互联网公司  前端开发工程师
+- 参与公司电商平台的前端开发，使用 React + Redux 技术栈
+- 实现商品详情页、购物车、订单流程等核心页面
+- 适配移动端 H5，兼容 iOS/Android 多种机型
+- 使用 Canvas 实现数据可视化图表（销售趋势、用户画像）
+
+【项目经历】
+
+项目名称：风控中台前端系统
+技术栈：React 18, TypeScript, Ant Design Pro, React Query, Zustand, Vite, Tailwind CSS
+描述：构建企业级风控审核系统，包含规则引擎配置、案件审核、报表分析等模块。
+核心技术：虚拟滚动（处理万级数据列表）、复杂表单联动、实时数据推送（WebSocket）、
+权限控制（RBAC）、国际化（i18n）。
+成果：支持 500+ 日活用户高频操作，页面交互响应时间 < 100ms
+
+项目名称：微前端改造
+技术栈：qiankun, Webpack 5 Module Federation, Single-SPA
+描述：将原有的单体前端应用拆分为主应用 + 5 个子应用的微前端架构，
+各子应用独立开发、部署、升级，主应用负责路由调度和公共资源管理。
+成果：开发效率提升 40%，构建时间从 8 分钟降至 2 分钟
+
+项目名称：移动端 H5 活动页生成器
+技术栈：React, Next.js, Canvas, Drag-and-Drop, Zustand
+描述：低代码平台，支持通过拖拽组件快速生成营销活动页，
+包含倒计时、抽奖、表单提交等常用组件，支持实时预览和一键发布。
+成果：运营团队活动页制作效率提升 10 倍，从 2 天降至 2 小时
+
+【教育背景】
+2015.09 - 2019.06  某 211 高校  软件工程  本科
+
+【技能清单】
+- 语言：TypeScript（精通）、JavaScript（精通）、HTML5/CSS3（精通）
+- 框架：React（精通）、Next.js、Remix、Vue（了解）
+- 状态管理：Redux Toolkit、Zustand、React Query、Jotai
+- UI 库：Ant Design、TailwindCSS、Material-UI、Styled Components
+- 工程化：Vite、Webpack、Rollup、ESLint、Prettier、Husky
+- 测试：Jest、React Testing Library、Cypress
+- 其他：GraphQL、WebSocket、Canvas、微前端（qiankun）

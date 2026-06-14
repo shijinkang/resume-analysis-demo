@@ -1,0 +1,40 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+*.iml
+.idea/
+.DS_Store
+
+# Spring Boot
+application-local.yml
+application-dev.yml
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# Environment
+.env
+*.log
+
+# Frontend
+node_modules/
+dist/
+
+# Database
+*.db
+*.sqlite
+
+# IDEs
+.vscode/
+*.swp
+*.swo
+*~

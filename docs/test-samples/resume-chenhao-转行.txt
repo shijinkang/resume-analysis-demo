@@ -1,0 +1,47 @@
+姓名：陈浩
+手机：135-0000-5555
+邮箱：chenhao@example.com
+
+【个人简介】
+6年软件开发经验，前3年做 PHP 后端，后转型做 Python 爬虫和数据分析，
+对 Java 和 Spring Boot 有基础了解，正在寻找 Java 后端岗位以转型回后端开发。
+
+【工作经历】
+
+2021.09 - 至今  某数据服务公司  Python 爬虫工程师
+- 负责电商数据采集系统的开发与维护
+- 使用 Scrapy、Selenium 采集淘宝、京东等平台的商品信息
+- 开发反爬策略（IP 代理池、User-Agent 轮换、验证码识别）
+- 日均采集数据 50 万条，存储到 MongoDB
+
+2018.07 - 2021.08  某小型软件公司  PHP 开发工程师
+- 参与公司内容管理系统（CMS）的开发，使用 Laravel 框架
+- 负责文章发布、用户评论、权限管理等模块
+- 对接第三方登录（微信、QQ）
+
+【项目经历】
+
+项目名称：电商数据采集平台
+技术栈：Python, Scrapy, Selenium, MongoDB, Redis, Docker
+描述：构建分布式爬虫系统，采集主流电商平台的商品价格、销量、评价等数据，
+供数据分析团队使用。
+
+项目名称：企业官网（PHP）
+技术栈：PHP, Laravel, MySQL, jQuery
+描述：开发企业官网的后台管理系统，支持新闻发布、产品展示、留言板等功能。
+
+【自学经历】
+- 2023 年开始自学 Java 和 Spring Boot，完成了慕课网《Java 从零到企业级项目实战》课程
+- 跟着教程做了一个简单的博客系统（Spring Boot + MyBatis + Thymeleaf）
+- 了解 MySQL、Redis 的基本使用
+- 正在学习 Spring Cloud 微服务
+
+【教育背景】
+2014.09 - 2018.06  某普通本科  信息管理与信息系统  本科
+
+【技能清单】
+- 语言：Python（精通）、PHP（熟悉）、Java（入门，自学中）
+- 框架：Scrapy、Laravel、Spring Boot（自学）
+- 数据库：MongoDB（熟练）、MySQL（了解）、Redis（了解）
+- 工具：Git、Docker（基础使用）
+- 其他：爬虫、数据清洗、简单的数据可视化（Matplotlib）

@@ -1,0 +1,36 @@
+前端开发工程师（React 方向）
+
+岗位职责：
+1. 负责公司 Web 前端应用的开发和维护
+2. 实现高质量的用户界面，优化用户体验
+3. 与设计师、后端工程师协作，完成产品功能开发
+4. 参与前端架构设计和技术选型
+5. 编写可维护、可扩展的前端代码
+
+任职要求：
+1. 本科及以上学历，计算机相关专业
+2. 2年以上前端开发经验
+3. 精通 JavaScript/TypeScript，深入理解 ES6+ 特性
+4. 熟练使用 React 及其生态（React Router、Redux/Zustand、React Query）
+5. 熟悉现代前端工程化工具（Webpack/Vite、ESLint、Prettier）
+6. 熟悉 HTML5/CSS3，能够实现响应式布局
+7. 了解浏览器原理、性能优化、前端安全
+8. 有良好的代码规范和团队协作能力
+
+技术栈要求：
+- React 18+
+- TypeScript 4.5+
+- Next.js/Remix（SSR 框架）
+- TailwindCSS/Ant Design/Material-UI
+- Git、npm/yarn/pnpm
+- RESTful API、GraphQL
+
+加分项：
+- 有移动端 H5 开发经验
+- 有微前端架构实践经验
+- 有 Node.js/Nest.js 后端开发经验
+- 熟悉 Canvas/WebGL（数据可视化）
+- 有开源组件库开发经验
+
+薪资范围：18K - 32K
+工作地点：北京/上海/杭州

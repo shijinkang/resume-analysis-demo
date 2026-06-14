@@ -1,0 +1,37 @@
+姓名：赵敏
+手机：132-0000-6666
+邮箱：zhaomin@example.com
+
+【个人简介】
+2年前端开发经验，使用 Vue 技术栈，有一定 React 基础，
+正在向 React 全栈方向转型，Next.js 和 TypeScript 在自学中。
+
+【工作经历】
+
+2022.08 - 至今  某传统软件公司  前端开发工程师
+- 负责公司 ERP 系统前端模块的开发和维护，使用 Vue 2 + Element UI
+- 实现表单、表格、报表等通用业务组件约 30 个
+- 配合后端同学联调接口，使用 Axios 封装请求层
+- 用 ECharts 实现销售报表可视化图表
+
+【项目经历】
+
+项目名称：企业 ERP 前端系统
+技术栈：Vue 2, Vuex, Vue Router, Element UI, Axios, ECharts
+描述：传统制造业 ERP 系统的前端部分，包含进销存、财务、人事等模块。
+负责其中进销存模块（采购、销售、库存管理）的前端开发。
+
+项目名称：个人学习项目 - React 博客
+技术栈：React 18, React Router v6, CSS Modules
+描述：用 React 自学做的个人博客，支持文章展示、分类筛选、基本路由。
+（项目较简单，未使用 TypeScript 和状态管理库）
+
+【教育背景】
+2018.09 - 2022.06  某普通本科  数字媒体技术  本科
+
+【技能清单】
+- 语言：JavaScript（熟悉）、HTML/CSS（熟悉）、TypeScript（入门）
+- 框架：Vue 2（熟练）、Vue 3（了解）、React（基础，自学）
+- UI 库：Element UI、Ant Design（了解）
+- 工具：Git（基础）、Webpack（了解）、Vite（了解）
+- 其他：ECharts、Axios

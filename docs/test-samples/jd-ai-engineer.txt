@@ -1,0 +1,36 @@
+AI 算法工程师
+
+岗位职责：
+1. 负责 NLP/CV 相关算法的研发和落地
+2. 参与大模型的训练、微调、部署和优化
+3. 设计并实现智能对话系统、文本生成、图像识别等 AI 应用
+4. 跟踪前沿技术，将最新的 AI 技术应用到实际业务中
+5. 与产品、工程团队紧密合作，确保算法效果和工程落地
+
+任职要求：
+1. 硕士及以上学历，计算机、人工智能、数学等相关专业
+2. 2年以上 NLP 或 CV 算法研发经验
+3. 熟练掌握 Python，熟悉 PyTorch/TensorFlow 等深度学习框架
+4. 熟悉 Transformer、BERT、GPT 等大模型架构
+5. 有 LLM 微调（LoRA、P-tuning）或 RAG 系统开发经验
+6. 熟悉提示工程（Prompt Engineering）和 Agent 开发
+7. 有模型部署经验（TensorRT、ONNX、FastAPI）
+8. 良好的编程能力和工程实践能力
+
+技术栈要求：
+- Python 3.8+
+- PyTorch/TensorFlow
+- Transformers（Hugging Face）
+- LangChain/LlamaIndex
+- Vector Database（Milvus/Pinecone/Chroma）
+- OpenAI API/Claude API/通义千问
+
+加分项：
+- 有 AIGC 产品开发经验
+- 有顶会论文发表（NeurIPS/CVPR/ACL/EMNLP）
+- 有预训练模型从零训练经验
+- 熟悉强化学习（RLHF）
+- 了解分布式训练（DeepSpeed/Megatron）
+
+薪资范围：30K - 60K
+工作地点：北京/杭州/深圳

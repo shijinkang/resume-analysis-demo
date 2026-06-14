@@ -1,0 +1,62 @@
+姓名：王磊
+手机：137-0000-3333
+邮箱：wanglei@example.com
+GitHub：github.com/wanglei-ai
+
+【个人简介】
+3年 AI 算法工程师经验，专注于 NLP 和大模型应用，有 RAG 系统、智能客服、文本生成等项目落地经验，
+熟悉主流大模型 API 和开源模型微调，对 LangChain、向量数据库等技术栈有深入实践。
+
+【工作经历】
+
+2022.08 - 至今  某 AI 创业公司  高级算法工程师
+- 负责公司智能客服系统的算法设计与实现，日均处理 10 万+对话请求
+- 基于 GPT-4 + RAG 构建知识问答系统，准确率从 65% 提升至 88%
+- 使用 Milvus 向量数据库存储 50 万条企业知识库，检索延迟控制在 50ms 以内
+- 实现大模型 Prompt 优化与管理平台，A/B 测试提升用户满意度 25%
+- 主导开源模型（Llama2-13B）LoRA 微调，在特定领域效果超越 GPT-3.5
+- 使用 FastAPI 部署模型推理服务，支持 100 QPS 并发
+
+2021.07 - 2022.07  某互联网大厂  NLP 算法工程师
+- 参与公司搜索推荐系统的文本理解模块优化
+- 使用 BERT 模型进行用户意图识别，准确率 92%
+- 实现文本摘要、关键词提取等 NLP 基础功能
+- 参与模型 A/B 实验，优化点击率提升 8%
+
+【项目经历】
+
+项目名称：企业智能客服 RAG 系统
+技术栈：Python, LangChain, OpenAI API, Milvus, Redis, FastAPI, PostgreSQL
+描述：构建基于检索增强生成（RAG）的智能客服系统，支持企业知识库的自动问答。
+核心技术包括：文档分块与向量化、Hybrid Search（语义+关键词）、
+Prompt Engineering、流式输出、多轮对话上下文管理。
+成果：人工客服工作量减少 60%，用户满意度从 75% 提升至 88%
+
+项目名称：开源大模型微调平台
+技术栈：PyTorch, Transformers, LoRA, DeepSpeed, Weights & Biases
+描述：基于 Llama2/ChatGLM 等开源模型进行领域微调，构建垂直领域的专用大模型。
+使用 LoRA 减少显存占用，支持单卡 A100 训练 13B 模型。
+成果：在法律咨询领域，微调后的 Llama2-13B 在专业性评测上超越 GPT-3.5
+
+项目名称：多模态商品描述生成
+技术栈：CLIP, GPT-4V, Stable Diffusion, LangChain
+描述：基于商品图片自动生成营销文案和 SEO 描述，使用 CLIP 提取图像特征，
+结合 GPT-4V 生成结构化商品描述。
+成果：电商运营效率提升 5 倍，文案生成时间从 30 分钟/条降至 1 分钟/条
+
+【教育背景】
+2019.09 - 2021.06  某 985 高校  计算机科学与技术（AI 方向）  硕士
+2015.09 - 2019.06  某 211 高校  软件工程  本科
+
+【论文发表】
+- Wang L., et al. "Efficient Retrieval-Augmented Generation for Domain-Specific QA", ACL 2023 Workshop
+- 一作发表 CCF-C 类会议论文 1 篇
+
+【技能清单】
+- 语言：Python（精通）、Java（了解）
+- 深度学习框架：PyTorch（精通）、TensorFlow（熟悉）
+- LLM 相关：LangChain、LlamaIndex、Transformers、OpenAI API、Claude API
+- 向量数据库：Milvus、Pinecone、Chroma
+- 模型微调：LoRA、QLoRA、P-tuning v2
+- 部署工具：FastAPI、TensorRT、ONNX、Docker
+- 其他：Git、Linux、MySQL、Redis

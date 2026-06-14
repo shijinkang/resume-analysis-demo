@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能简历解析与试题生成引擎</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50:'#eef2ff', 100:'#e0e7ff', 500:'#6366f1', 600:'#4f46e5', 700:'#4338ca' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen" x-data="app()" x-init="init()" x-cloak>
+
+  <!-- SECTION: Header + Nav Tabs -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <div class="hidden sm:block">
+            <h1 class="text-base font-semibold text-gray-900 leading-tight">智能简历解析引擎</h1>
+            <p class="text-xs text-gray-400">AI Resume Analysis</p>
+          </div>
+        </div>
+
+        <nav class="flex items-center gap-1 overflow-x-auto">
+          <button @click="navigate('workspace')"
+            class="nav-tab px-3 py-1.5 text-sm rounded-lg transition-colors whitespace-nowrap"
+            :class="activeView === 'workspace' ? 'nav-tab-active text-primary-600 bg-primary-50 font-medium' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50'">
+            工作台
+          </button>
+          <button @click="navigate('jd-manage')"
+            class="nav-tab px-3 py-1.5 text-sm rounded-lg transition-colors whitespace-nowrap"
+            :class="activeView === 'jd-manage' ? 'nav-tab-active text-primary-600 bg-primary-50 font-medium' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50'">
+            JD 管理
+          </button>
+          <button @click="navigate('resume-manage')"
+            class="nav-tab px-3 py-1.5 text-sm rounded-lg transition-colors whitespace-nowrap"
+            :class="activeView === 'resume-manage' ? 'nav-tab-active text-primary-600 bg-primary-50 font-medium' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50'">
+            简历管理
+          </button>
+          <button @click="navigate('analysis')" x-show="matchResults.length > 0"
+            class="nav-tab px-3 py-1.5 text-sm rounded-lg transition-colors whitespace-nowrap"
+            :class="activeView === 'analysis' ? 'nav-tab-active text-primary-600 bg-primary-50 font-medium' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50'">
+            分析结果
+          </button>
+        </nav>
+
+        <button x-show="activeView === 'analysis'" @click="reset()"
+          class="text-sm text-gray-500 hover:text-gray-800 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors shrink-0 whitespace-nowrap">
+          重新分析
+        </button>
+        <div x-show="activeView !== 'analysis'" class="w-20 shrink-0 hidden sm:block"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION: Toast -->
+  <div class="fixed top-16 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none">
+    <div x-show="errorMsg" x-transition
+         class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 pointer-events-auto">
+      <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>
+      </svg>
+      <span x-text="errorMsg"></span>
+    </div>
+    <div x-show="successMsg" x-transition
+         class="bg-green-50 border border-green-500 text-green-800 text-sm px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 pointer-events-auto">
+      <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+      </svg>
+      <span x-text="successMsg"></span>
+    </div>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+    <!-- SECTION: View - Workspace -->
+    <div x-show="activeView === 'workspace'" class="page-enter max-w-3xl mx-auto">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold text-gray-900">智能简历分析</h2>
+        <p class="text-gray-500 mt-2 text-sm">选择 JD 和简历，开始 AI 智能匹配</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- JD selector card -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-semibold text-gray-900">当前 JD</h3>
+            <button @click="enterJdManage()" class="text-xs text-primary-600 hover:text-primary-700 font-medium">
+              管理 JD →
+            </button>
+          </div>
+
+          <div x-show="jdList.length === 0" class="text-center py-8">
+            <p class="text-sm text-gray-400 mb-3">暂无 JD</p>
+            <button @click="enterJdManage()" class="text-sm text-primary-600 hover:underline">去上传第一份 JD</button>
+          </div>
+
+          <div x-show="jdList.length > 0" class="space-y-2">
+            <template x-for="jd in workspaceJdList" :key="jd.id">
+              <button @click="selectJd(jd.id)"
+                class="w-full text-left p-3 rounded-lg border transition list-item-enter"
+                :class="selectedJdId === jd.id ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'">
+                <p class="text-sm font-medium text-gray-800 truncate" x-text="jd.title"></p>
+                <p class="text-xs text-gray-400 mt-0.5" x-text="formatDate(jd.createdAt)"></p>
+              </button>
+            </template>
+            <button x-show="jdList.length > 5" @click="enterJdManage()"
+              class="w-full text-center text-xs text-gray-500 hover:text-primary-600 py-2">
+              查看全部 <span x-text="jdList.length"></span> 份 JD →
+            </button>
+          </div>
+        </div>
+
+        <!-- Resume selector card -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-semibold text-gray-900">
+              候选简历
+              <span x-show="checkedResumeIds.length > 0" class="text-primary-600 font-normal"
+                x-text="'(' + checkedResumeIds.length + ')'"></span>
+            </h3>
+            <div class="flex items-center gap-2">
+              <button x-show="resumeList.length > 0" @click="toggleAllResumes()"
+                class="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                x-text="checkedResumeIds.length === resumeList.length ? '取消全选' : '全选'"></button>
+              <button @click="enterResumeManage()" class="text-xs text-primary-600 hover:text-primary-700 font-medium">
+                管理简历 →
+              </button>
+            </div>
+          </div>
+
+          <div x-show="resumeList.length === 0" class="text-center py-8">
+            <p class="text-sm text-gray-400 mb-3">暂无简历</p>
+            <button @click="enterResumeManage()" class="text-sm text-primary-600 hover:underline">去上传第一份简历</button>
+          </div>
+
+          <div x-show="resumeList.length > 0" class="space-y-2 max-h-64 overflow-y-auto list-scroll">
+            <template x-for="resume in resumeList" :key="resume.id">
+              <label class="flex items-center p-3 rounded-lg border cursor-pointer transition list-item-enter"
+                     :class="isResumeChecked(resume.id) ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'">
+                <input type="checkbox" :checked="isResumeChecked(resume.id)" @change="toggleResume(resume.id)"
+                       class="mr-3 accent-primary-600 shrink-0">
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-medium text-gray-800 truncate" x-text="resume.fileName"></p>
+                  <p class="text-xs text-gray-400 mt-0.5" x-text="formatDate(resume.createdAt)"></p>
+                </div>
+              </label>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis action -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div x-show="selectedJdId" class="mb-3 flex items-center gap-2 text-sm text-gray-600">
+          <span class="text-gray-400">已选 JD:</span>
+          <span class="font-medium text-gray-800 truncate" x-text="selectedJdTitle"></span>
+        </div>
+        <div x-show="!selectedJdId" class="mb-3 text-sm text-gray-400">请先选择一个 JD</div>
+        <div x-show="checkedResumeIds.length > 0" class="mb-4 text-sm text-gray-600">
+          已选 <span class="font-medium text-primary-600" x-text="checkedResumeIds.length"></span> 份简历
+        </div>
+        <div x-show="checkedResumeIds.length === 0" class="mb-4 text-sm text-gray-400">请至少选择一份简历</div>
+
+        <button @click="startAnalysis()" :disabled="!canStart"
+          class="w-full py-3 px-6 rounded-xl font-semibold text-white transition flex items-center justify-center"
+          :class="canStart ? 'bg-primary-600 hover:bg-primary-700 shadow-sm' : 'bg-gray-300 cursor-not-allowed'">
+          <span x-show="!loading">开始 AI 分析</span>
+          <span x-show="loading" class="flex items-center gap-2">
+            <div class="spinner !w-5 !h-5 !border-2 !border-white/30 !border-t-white"></div>
+            分析中...
+          </span>
+        </button>
+        <p x-show="loading && loadingMsg" class="text-center text-xs text-gray-400 mt-2" x-text="loadingMsg"></p>
+      </div>
+
+      <p class="text-center text-xs text-gray-400 mt-6">
+        共 <span x-text="jdList.length"></span> 份 JD · <span x-text="resumeList.length"></span> 份简历
+      </p>
+    </div>
+
+    <!-- SECTION: View - JD Manage -->
+    <div x-show="activeView === 'jd-manage'" class="page-enter">
+      <div class="manage-layout flex flex-col md:flex-row gap-0 md:gap-0 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden min-h-[calc(100vh-8rem)]">
+        <!-- Sidebar -->
+        <div class="manage-sidebar w-full md:w-72 shrink-0 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col">
+          <div class="p-4 border-b border-gray-100">
+            <h2 class="text-base font-semibold text-gray-900 mb-3">JD 管理</h2>
+            <input type="text" x-model="jdSearchQuery" placeholder="搜索 JD..."
+              class="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500">
+          </div>
+
+          <div class="p-4 border-b border-gray-100">
+            <div class="border-2 border-dashed border-gray-200 rounded-lg p-3 text-center transition-all mb-2"
+                 :class="isDraggingJd ? 'drag-over' : 'hover:border-primary-300 hover:bg-primary-50/30'"
+                 @dragover.prevent="isDraggingJd = true"
+                 @dragleave="isDraggingJd = false"
+                 @drop.prevent="handleJdDrop($event)">
+              <p class="text-xs text-gray-400">拖拽 PDF/DOCX 到此处</p>
+            </div>
+            <div x-show="jdFileName" class="flex items-center gap-2 bg-primary-50 rounded-lg p-2 mb-2">
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-medium text-gray-800 truncate" x-text="jdFileName"></p>
+              </div>
+              <button @click="clearJdFile()" class="text-gray-400 hover:text-red-500 p-0.5">
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+            <input type="file" x-ref="jdInput" class="hidden" accept=".pdf,.docx" @change="handleJdFile($event)">
+            <div class="flex gap-2">
+              <button @click="$refs.jdInput.click()" :disabled="uploadingJd"
+                class="flex-1 py-1.5 text-xs font-medium border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50">
+                选择文件
+              </button>
+              <button @click="uploadSelectedJd()" :disabled="!jdFileName || uploadingJd"
+                class="flex-1 py-1.5 text-xs font-semibold bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+                <span x-show="!uploadingJd">上传</span>
+                <span x-show="uploadingJd">上传中...</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex-1 overflow-y-auto list-scroll p-2">
+            <template x-for="jd in filteredJdList" :key="jd.id">
+              <button @click="selectJdInManage(jd.id)"
+                class="w-full text-left p-3 rounded-lg mb-1 transition list-item-enter"
+                :class="activeJdId === jd.id ? 'bg-primary-50 text-primary-700' : 'hover:bg-gray-50 text-gray-700'">
+                <p class="text-sm font-medium truncate" x-text="jd.title"></p>
+                <p class="text-xs text-gray-400 mt-0.5" x-text="formatDate(jd.createdAt)"></p>
+              </button>
+            </template>
+            <p x-show="filteredJdList.length === 0" class="text-sm text-gray-400 text-center py-8">暂无 JD</p>
+          </div>
+        </div>
+
+        <!-- Detail panel -->
+        <div class="detail-panel flex-1 flex flex-col min-w-0">
+          <div x-show="!activeJdId" class="flex-1 flex items-center justify-center text-gray-400 text-sm">
+            请从左侧选择或上传 JD
+          </div>
+
+          <template x-if="activeJdId">
+            <div class="flex flex-col h-full">
+              <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <div class="flex gap-1">
+                  <button @click="switchDetailTab('preview')"
+                    class="px-4 py-1.5 text-sm rounded-lg transition"
+                    :class="detailTab === 'preview' ? 'bg-primary-50 text-primary-600 font-medium' : 'text-gray-500 hover:text-gray-700'">
+                    预览
+                  </button>
+                  <button @click="switchDetailTab('edit')"
+                    class="px-4 py-1.5 text-sm rounded-lg transition"
+                    :class="detailTab === 'edit' ? 'bg-primary-50 text-primary-600 font-medium' : 'text-gray-500 hover:text-gray-700'">
+                    编辑
+                    <span x-show="isDirty" class="text-orange-500">*</span>
+                  </button>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button x-show="detailTab === 'edit'" @click="cancelJdEdit()"
+                    class="text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-50">
+                    取消
+                  </button>
+                  <button x-show="detailTab === 'edit'" @click="saveJd()" :disabled="detailLoading"
+                    class="text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 px-4 py-1.5 rounded-lg disabled:opacity-50">
+                    保存
+                  </button>
+                  <button @click="deleteJd()"
+                    class="text-sm text-red-500 hover:text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-50">
+                    删除
+                  </button>
+                </div>
+              </div>
+
+              <div x-show="detailLoading" class="flex-1 flex items-center justify-center">
+                <div class="spinner"></div>
+              </div>
+
+              <div x-show="!detailLoading && detailTab === 'preview'" class="flex-1 overflow-y-auto list-scroll p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-1" x-text="jdDetail?.title"></h3>
+                <p class="text-xs text-gray-400 mb-4" x-text="'更新于 ' + formatDateTime(jdDetail?.updatedAt)"></p>
+                <div class="prose-preview text-sm text-gray-700 whitespace-pre-wrap leading-relaxed" x-text="jdDetail?.content"></div>
+              </div>
+
+              <div x-show="!detailLoading && detailTab === 'edit'" class="flex-1 overflow-y-auto list-scroll p-6 flex flex-col gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-gray-500 mb-1.5">标题</label>
+                  <input type="text" x-model="editJdDraft.title" @input="markJdDirty()"
+                    class="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500">
+                </div>
+                <div class="flex-1 flex flex-col">
+                  <label class="block text-xs font-medium text-gray-500 mb-1.5">内容</label>
+                  <textarea x-model="editJdDraft.content" @input="markJdDirty()"
+                    class="flex-1 min-h-[300px] w-full text-sm border border-gray-200 rounded-lg px-3 py-2 font-mono leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 resize-y"></textarea>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: View - Resume Manage -->
+    <div x-show="activeView === 'resume-manage'" class="page-enter">
+      <div class="manage-layout flex flex-col md:flex-row gap-0 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden min-h-[calc(100vh-8rem)]">
+        <!-- Sidebar -->
+        <div class="manage-sidebar w-full md:w-72 shrink-0 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col">
+          <div class="p-4 border-b border-gray-100">
+            <h2 class="text-base font-semibold text-gray-900 mb-3">简历管理</h2>
+            <input type="text" x-model="resumeSearchQuery" placeholder="搜索简历..."
+              class="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500">
+          </div>
+
+          <div class="p-4 border-b border-gray-100">
+            <div class="border-2 border-dashed border-gray-200 rounded-lg p-3 text-center transition-all mb-2"
+                 :class="isDraggingResume ? 'drag-over' : 'hover:border-primary-300 hover:bg-primary-50/30'"
+                 @dragover.prevent="isDraggingResume = true"
+                 @dragleave="isDraggingResume = false"
+                 @drop.prevent="handleResumeDrop($event)">
+              <p class="text-xs text-gray-400">拖拽 PDF/DOCX（可多选）</p>
+            </div>
+            <div x-show="pendingResumes.length > 0" class="space-y-1 mb-2 max-h-20 overflow-y-auto list-scroll">
+              <template x-for="(file, index) in pendingResumes" :key="index">
+                <div class="flex items-center gap-2 bg-primary-50 rounded p-1.5">
+                  <p class="text-xs truncate flex-1" x-text="file.name"></p>
+                  <button @click="removeResume(index)" class="text-gray-400 hover:text-red-500">
+                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+              </template>
+            </div>
+            <input type="file" x-ref="resumeInput" class="hidden" accept=".pdf,.docx" multiple @change="handleResumeFiles($event)">
+            <div class="flex gap-2">
+              <button @click="$refs.resumeInput.click()" :disabled="uploadingResume"
+                class="flex-1 py-1.5 text-xs font-medium border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50">
+                选择文件
+              </button>
+              <button @click="uploadSelectedResumes()" :disabled="pendingResumes.length === 0 || uploadingResume"
+                class="flex-1 py-1.5 text-xs font-semibold bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+                <span x-show="!uploadingResume">上传</span>
+                <span x-show="uploadingResume">上传中...</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex-1 overflow-y-auto list-scroll p-2">
+            <template x-for="resume in filteredResumeList" :key="resume.id">
+              <button @click="selectResumeInManage(resume.id)"
+                class="w-full text-left p-3 rounded-lg mb-1 transition list-item-enter"
+                :class="activeResumeId === resume.id ? 'bg-primary-50 text-primary-700' : 'hover:bg-gray-50 text-gray-700'">
+                <p class="text-sm font-medium truncate" x-text="resume.fileName"></p>
+                <p class="text-xs text-gray-400 mt-0.5" x-text="formatDate(resume.createdAt)"></p>
+              </button>
+            </template>
+            <p x-show="filteredResumeList.length === 0" class="text-sm text-gray-400 text-center py-8">暂无简历</p>
+          </div>
+        </div>
+
+        <!-- Detail panel -->
+        <div class="detail-panel flex-1 flex flex-col min-w-0">
+          <div x-show="!activeResumeId" class="flex-1 flex items-center justify-center text-gray-400 text-sm">
+            请从左侧选择或上传简历
+          </div>
+
+          <template x-if="activeResumeId">
+            <div class="flex flex-col h-full">
+              <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <div class="flex gap-1">
+                  <button @click="switchDetailTab('preview')"
+                    class="px-4 py-1.5 text-sm rounded-lg transition"
+                    :class="detailTab === 'preview' ? 'bg-primary-50 text-primary-600 font-medium' : 'text-gray-500 hover:text-gray-700'">
+                    原文预览
+                  </button>
+                  <button @click="switchDetailTab('edit')"
+                    class="px-4 py-1.5 text-sm rounded-lg transition"
+                    :class="detailTab === 'edit' ? 'bg-primary-50 text-primary-600 font-medium' : 'text-gray-500 hover:text-gray-700'">
+                    编辑
+                    <span x-show="isDirty" class="text-orange-500">*</span>
+                  </button>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button x-show="detailTab === 'edit'" @click="cancelResumeEdit()"
+                    class="text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-50">
+                    取消
+                  </button>
+                  <button x-show="detailTab === 'edit'" @click="saveResume()" :disabled="detailLoading"
+                    class="text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 px-4 py-1.5 rounded-lg disabled:opacity-50">
+                    保存
+                  </button>
+                  <button @click="deleteResume()"
+                    class="text-sm text-red-500 hover:text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-50">
+                    删除
+                  </button>
+                </div>
+              </div>
+
+              <div x-show="detailLoading" class="flex-1 flex items-center justify-center">
+                <div class="spinner"></div>
+              </div>
+
+              <div x-show="!detailLoading && detailTab === 'preview'" class="flex-1 overflow-y-auto list-scroll p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-1" x-text="resumeDetail?.fileName"></h3>
+                <p class="text-xs text-gray-400 mb-4" x-text="'更新于 ' + formatDateTime(resumeDetail?.updatedAt)"></p>
+                <div class="prose-preview text-sm text-gray-700 whitespace-pre-wrap leading-relaxed" x-text="resumeDetail?.rawText"></div>
+              </div>
+
+              <div x-show="!detailLoading && detailTab === 'edit'" class="flex-1 overflow-y-auto list-scroll p-6 flex flex-col gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-gray-500 mb-1.5">文件名（只读）</label>
+                  <input type="text" :value="resumeDetail?.fileName" readonly
+                    class="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-gray-50 text-gray-500 cursor-not-allowed">
+                </div>
+                <div class="flex-1 flex flex-col">
+                  <label class="block text-xs font-medium text-gray-500 mb-1.5">原文内容</label>
+                  <textarea x-model="editResumeDraft.rawText" @input="markResumeDirty()"
+                    class="flex-1 min-h-[300px] w-full text-sm border border-gray-200 rounded-lg px-3 py-2 font-mono leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 resize-y"></textarea>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: View - Analysis Results -->
+    <div x-show="activeView === 'analysis'" class="page-enter">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Left sidebar -->
+        <div class="w-full lg:w-80 shrink-0">
+          <div class="bg-white rounded-xl border border-gray-200 lg:sticky lg:top-20">
+            <div class="p-4 border-b border-gray-100">
+              <h3 class="font-semibold text-gray-800 text-sm flex items-center gap-2">
+                候选人列表
+                <span class="ml-auto text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full" x-text="matchResults.length"></span>
+              </h3>
+            </div>
+            <div class="max-h-64 lg:max-h-[calc(100vh-12rem)] overflow-y-auto sidebar-scroll p-2">
+              <template x-for="(result, index) in matchResults" :key="result.resumeId">
+                <button @click="selectResume(result)"
+                  class="w-full text-left p-3 rounded-xl mb-2 transition-all fade-in-up"
+                  :class="selectedResume?.resumeId === result.resumeId ? 'bg-primary-50 border-2 border-primary-500' : 'bg-gray-50 border border-gray-100 hover:bg-gray-100'">
+                  <div class="flex items-center gap-3">
+                    <div class="relative">
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-semibold text-sm"
+                        x-text="(result.candidateName || '候').charAt(0)"></div>
+                      <div class="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold"
+                        :class="result.score >= 80 ? 'bg-green-500 text-white' : result.score >= 60 ? 'bg-yellow-400 text-white' : 'bg-red-400 text-white'">
+                        <span x-text="result.score"></span>
+                      </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-semibold text-gray-800 truncate"
+                        x-text="result.candidateName || '候选人 ' + (index + 1)"></p>
+                      <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-xs px-1.5 py-0.5 rounded border font-medium"
+                          :class="recommendColor(result.recommendation)"
+                          x-text="recommendLabel(result.recommendation)"></span>
+                        <span class="text-xs text-gray-400" x-text="'匹配度 ' + result.score + '%'"></span>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Detail Panel -->
+        <div class="flex-1 min-w-0">
+          <div x-show="!selectedResume" class="flex items-center justify-center h-64">
+            <div class="text-center">
+              <svg class="w-16 h-16 text-gray-200 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+              <p class="text-gray-400 text-sm">请从左侧选择候选人查看详情</p>
+            </div>
+          </div>
+
+          <div x-show="selectedResume">
+            <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h2 class="text-2xl font-bold text-gray-900 mb-1"
+                    x-text="selectedResume?.candidateName || '候选人详情'"></h2>
+                  <div class="flex items-center gap-3 mt-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-medium"
+                      :class="recommendColor(selectedResume?.recommendation)">
+                      <span x-text="recommendLabel(selectedResume?.recommendation)"></span>
+                    </span>
+                    <div class="h-4 w-px bg-gray-200"></div>
+                    <span class="text-sm text-gray-500">匹配分析报告</span>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <div class="relative inline-flex items-center justify-center">
+                    <svg class="w-24 h-24 transform -rotate-90">
+                      <circle cx="48" cy="48" r="38" stroke="#e5e7eb" stroke-width="8" fill="none"/>
+                      <circle cx="48" cy="48" r="38" stroke="currentColor" stroke-width="8" fill="none"
+                        :class="scoreBarColor(selectedResume?.score || 0)"
+                        stroke-dasharray="240"
+                        :stroke-dashoffset="240 - (240 * (selectedResume?.score || 0) / 100)"
+                        class="score-ring" stroke-linecap="round"/>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                      <span class="text-2xl font-bold" :class="scoreColor(selectedResume?.score || 0)"
+                        x-text="selectedResume?.score"></span>
+                      <span class="text-xs text-gray-400">分</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+                <p class="text-sm text-gray-700 leading-relaxed" x-text="selectedResume?.reason"></p>
+              </div>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4"
+                x-show="selectedResume?.dimensions && Object.keys(selectedResume.dimensions).length > 0">
+                <template x-for="(value, key) in selectedResume?.dimensions" :key="key">
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-xs font-medium text-gray-600" x-text="key"></span>
+                      <span class="text-xs font-semibold" :class="scoreColor(value)" x-text="value"></span>
+                    </div>
+                    <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div class="h-full rounded-full bar-width-transition"
+                        :class="scoreBarColor(value)" :style="'width: ' + value + '%'"></div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div x-show="selectedResume?.strengths?.length > 0">
+                  <h4 class="text-xs font-semibold text-green-600 mb-2">优势亮点</h4>
+                  <ul class="space-y-1.5">
+                    <template x-for="item in selectedResume?.strengths" :key="item">
+                      <li class="text-xs text-gray-600 flex items-start gap-1.5">
+                        <span class="text-green-400 mt-0.5">●</span>
+                        <span x-text="item"></span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+                <div x-show="selectedResume?.gaps?.length > 0">
+                  <h4 class="text-xs font-semibold text-orange-600 mb-2">待评估点</h4>
+                  <ul class="space-y-1.5">
+                    <template x-for="item in selectedResume?.gaps" :key="item">
+                      <li class="text-xs text-gray-600 flex items-start gap-1.5">
+                        <span class="text-orange-400 mt-0.5">●</span>
+                        <span x-text="item"></span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+              <div class="flex border-b border-gray-100">
+                <button @click="activeTab = 'questions'"
+                  class="flex-1 px-6 py-3.5 text-sm font-medium transition-colors relative"
+                  :class="activeTab === 'questions' ? 'text-primary-600 bg-primary-50' : 'text-gray-500 hover:text-gray-700'">
+                  面试题目
+                  <span class="ml-1 text-xs bg-primary-100 text-primary-600 px-2 py-0.5 rounded-full" x-text="questions.length"></span>
+                  <div x-show="activeTab === 'questions'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-500"></div>
+                </button>
+                <button @click="activeTab = 'followup'"
+                  class="flex-1 px-6 py-3.5 text-sm font-medium transition-colors relative"
+                  :class="activeTab === 'followup' ? 'text-primary-600 bg-primary-50' : 'text-gray-500 hover:text-gray-700'">
+                  针对性追问
+                  <span class="ml-1 text-xs bg-primary-100 text-primary-600 px-2 py-0.5 rounded-full" x-text="followups.length"></span>
+                  <div x-show="activeTab === 'followup'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-500"></div>
+                </button>
+              </div>
+
+              <div x-show="loadingQuestions" class="p-12 text-center">
+                <div class="spinner mx-auto mb-3"></div>
+                <p class="text-sm text-gray-500">AI 正在生成面试题...</p>
+              </div>
+
+              <div x-show="activeTab === 'questions' && !loadingQuestions" class="p-6">
+                <div x-show="questions.length === 0" class="text-center py-12">
+                  <p class="text-sm text-gray-400">暂无面试题</p>
+                </div>
+                <div class="space-y-4">
+                  <template x-for="(q, index) in questions" :key="q.id || index">
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 fade-in-up">
+                      <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                          <span class="w-6 h-6 rounded-full bg-primary-500 text-white text-xs font-bold flex items-center justify-center"
+                            x-text="index + 1"></span>
+                          <span class="text-xs px-2 py-1 rounded-lg font-medium"
+                            :class="categoryColor(q.category)" x-text="categoryLabel(q.category)"></span>
+                        </div>
+                        <span class="text-xs text-gray-400" x-text="difficultyLabel(q.difficulty)"></span>
+                      </div>
+                      <p class="text-sm font-medium text-gray-900 mb-3" x-text="q.question"></p>
+                      <div x-show="q.keyPoints && q.keyPoints.length > 0" class="mb-3">
+                        <p class="text-xs font-semibold text-gray-500 mb-1.5">考察要点:</p>
+                        <ul class="space-y-1">
+                          <template x-for="point in q.keyPoints" :key="point">
+                            <li class="text-xs text-gray-600 flex items-start gap-1.5">
+                              <span class="text-primary-400 mt-0.5">▸</span>
+                              <span x-text="point"></span>
+                            </li>
+                          </template>
+                        </ul>
+                      </div>
+                      <div x-show="q.scoringCriteria" class="pt-3 border-t border-gray-200">
+                        <p class="text-xs font-semibold text-gray-500 mb-1">评分标准:</p>
+                        <p class="text-xs text-gray-600" x-text="q.scoringCriteria"></p>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+
+              <div x-show="activeTab === 'followup' && !loadingQuestions" class="p-6">
+                <div x-show="followups.length === 0" class="text-center py-12">
+                  <p class="text-sm text-gray-400">暂无追问题</p>
+                </div>
+                <div class="space-y-4">
+                  <template x-for="(q, index) in followups" :key="q.id || index">
+                    <div class="bg-orange-50 rounded-xl p-5 border border-orange-100 fade-in-up">
+                      <div class="flex items-start gap-3 mb-3">
+                        <span class="w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center shrink-0"
+                          x-text="index + 1"></span>
+                        <p class="text-sm font-medium text-gray-900 flex-1" x-text="q.question"></p>
+                      </div>
+                      <div x-show="q.context" class="mb-2 pl-9">
+                        <p class="text-xs font-semibold text-orange-600 mb-1">简历上下文:</p>
+                        <p class="text-xs text-gray-600 italic" x-text="q.context"></p>
+                      </div>
+                      <div x-show="q.reason" class="pl-9">
+                        <p class="text-xs font-semibold text-orange-600 mb-1">追问原因:</p>
+                        <p class="text-xs text-gray-600" x-text="q.reason"></p>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/app.js?v=3"></script>
+</body>
+</html>

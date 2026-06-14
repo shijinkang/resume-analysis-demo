@@ -1,0 +1,50 @@
+姓名：张伟
+手机：138-0000-1111
+邮箱：zhangwei@example.com
+GitHub：github.com/zhangwei-dev
+
+【个人简介】
+5年 Java 后端开发经验，熟悉高并发、分布式系统设计，有大型电商平台核心模块开发经验，
+热爱技术，关注性能优化和系统稳定性。
+
+【工作经历】
+
+2021.03 - 至今  某电商平台（上市公司）  高级后端工程师
+- 负责订单中台系统的设计与开发，承担日均 500 万订单的处理，QPS 峰值达到 3 万
+- 主导完成单体系统向微服务架构迁移，拆分为 12 个子服务，系统可用性从 99.5% 提升到 99.99%
+- 设计并实现分布式事务方案（Seata），解决跨服务数据一致性问题
+- 引入 Kafka 消息队列削峰填谷，将秒杀场景下数据库写压力降低 80%
+- 使用 Redis 多级缓存策略，热点商品接口响应从 200ms 优化至 15ms
+- 参与 MySQL 分库分表设计（ShardingSphere），单表从 8000 万行优化至分片后每片 500 万行
+
+2019.06 - 2021.02  某创业公司  Java 开发工程师
+- 参与公司 SaaS 后台系统从零搭建，使用 Spring Boot + MyBatis-Plus 技术栈
+- 开发用户权限管理模块（RBAC 模型），支持灵活配置多租户权限
+- 对接多个第三方支付接口（微信支付、支付宝），日处理交易额超 100 万元
+- 编写单元测试，代码覆盖率从 40% 提升至 80%
+
+【项目经历】
+
+项目名称：订单中台重构
+技术栈：Java 17, Spring Cloud Alibaba, Nacos, Seata, Kafka, Redis, MySQL, Docker, K8s
+描述：将原有单体订单系统拆分为独立的订单创建、支付、物流、售后四个服务，
+统一通过 API Gateway 对外暴露接口，各服务通过 Kafka 异步通信，
+极大提升了系统的可维护性和扩展性。
+成果：系统吞吐量提升 3 倍，部署效率提升 5 倍（CI/CD 自动化）
+
+项目名称：实时库存系统
+技术栈：Java, Redis Lua 脚本, RabbitMQ, MySQL
+描述：设计基于 Redis 的实时库存扣减方案，通过 Lua 脚本保证原子性，
+结合 RabbitMQ 实现库存回滚的异步通知，解决超卖问题。
+成果：库存准确率 100%，超卖事故从每月 2-3 起降至零
+
+【教育背景】
+2015.09 - 2019.06  某985高校  计算机科学与技术  本科
+
+【技能清单】
+- 语言：Java（精通）、Python（了解）、Go（入门）
+- 框架：Spring Boot、Spring Cloud、Spring Security、MyBatis-Plus
+- 中间件：Kafka、RabbitMQ、Redis、Elasticsearch
+- 数据库：MySQL（熟练，有调优经验）、PostgreSQL、H2
+- 容器：Docker、K8s（CKA 认证）
+- 工具：Git、Maven、Gradle、Jenkins、Prometheus

@@ -1,0 +1,51 @@
+姓名：吴晓峰
+手机：134-0000-8888
+邮箱：wuxf@example.com
+博客：blog.wuxf.dev
+
+【个人简介】
+5年 Java 后端开发经验，近一年开始系统学习 Go 语言，用 Go 完成了一个完整的旁路项目。
+Java 功底扎实，Go 相对较新，技术转型中，希望能转到 Go 为主的团队。
+
+【工作经历】
+
+2020.03 - 至今  某 SaaS 公司  高级 Java 开发工程师
+- 负责公司 BI 分析平台的后端开发，Java 17 + Spring Boot + MyBatis-Plus
+- 设计 RESTful API，日活用户约 8000，QPS 峰值 2000
+- 使用 Redis 做接口缓存，将数据看板加载时间从 3s 降至 300ms
+- 引入 Kafka 做报表异步生成，避免超大报表请求超时
+- 写过一些 Go 的工具脚本和内部小服务（HTTP Server + MySQL）
+- 2023 年利用业余时间用 Go + Gin + GORM 从零搭了一个博客系统并上线
+
+2018.06 - 2020.02  某外包公司  Java 开发工程师
+- 参与多个银行和政府项目的后端开发，使用传统 SSM 架构
+- 熟悉接口文档编写（Swagger）、代码 Review、联调测试
+
+【Go 语言实践】
+- 业余时间系统学习 Go，读完了《Go 语言圣经》和《Go 语言高性能编程》
+- 用 Gin + GORM + Redis 独立开发了内容聚合平台（线上运行 6 个月，无重大故障）
+- 了解 goroutine、channel、context 等并发原语
+- gRPC 做过 demo，未在生产环境使用
+- 对 Go 的内存模型和 GC 机制有一定了解（看过源码注释）
+
+【项目经历】
+
+项目名称：BI 报表平台（Java）
+技术栈：Java, Spring Boot, MyBatis-Plus, Redis, Kafka, MySQL, ECharts
+描述：多租户 SaaS 报表平台，支持自定义看板、图表拖拽配置、数据权限隔离。
+成果：支持 200+ 企业客户，报表生成 P95 从 8s 降至 1.2s
+
+项目名称：内容聚合平台（Go，个人项目）
+技术栈：Go, Gin, GORM, Redis, MySQL, Nginx, Docker
+描述：聚合多个 RSS 源的内容推荐站点，支持标签过滤、全文搜索。
+成果：独立完成全栈开发和部署，稳定运行半年
+
+【教育背景】
+2014.09 - 2018.06  某普通本科  软件工程  本科
+
+【技能清单】
+- Java（精通）：Spring Boot、Spring Security、MyBatis-Plus、JVM 调优
+- Go（入门到中级）：Gin、GORM、标准库、并发编程基础，未有生产经验
+- 中间件：Redis、Kafka、MySQL、Elasticsearch
+- 工具：Docker（熟悉）、K8s（了解，没有独立运维过）、Git
+- 弱项：微服务治理、gRPC 生产实践、Protobuf 设计经验不足
